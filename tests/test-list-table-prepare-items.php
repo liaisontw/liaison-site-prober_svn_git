@@ -44,7 +44,8 @@ class Test_LIAISIPR_List_Table_Prepare_Items extends WP_UnitTestCase {
 
     public function test_prepare_items_loads_rows() {
 
-        require_once __DIR__ . '/../wp-site-prober/admin/class-liaisipr-list-table.php';
+        //require_once __DIR__ . '/../wp-site-prober/admin/class-liaisipr-list-table.php';
+        require_once __DIR__ . '/../admin/class-liaison-site-prober-list-table.php';
 
         // 建立 instance
         $list_table = new LIAISIPR_List_Table();
