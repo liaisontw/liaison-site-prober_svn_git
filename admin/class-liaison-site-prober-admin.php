@@ -1,0 +1,245 @@
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+class LIAISIPR_Admin {
+
+    /**
+     * The ID of this plugin.
+     *
+     * @since    1.0.0
+     * @access   private
+     * @var      string    $plugin_name    The ID of this plugin.
+     */
+    private $plugin_name;
+
+    /**
+     * The version of this plugin.
+     *
+     * @since    1.0.0
+     * @access   private
+     * @var      string    $version    The current version of this plugin.
+     */
+    private $version;
+
+
+	protected $logger;
+	protected $table;
+	protected $wpsp_list_table = null;
+	public function __construct( $logger, $plugin_name, $version ) {
+		$this->logger = $logger;
+		$this->plugin_name = $plugin_name;
+        $this->version = $version;
+		$this->table = $this->logger->get_table_name();
+        add_action('admin_menu', array($this, 'admin_menu'));
+
+		// handle csv export
+		add_action( 'admin_post_WP_Site_Prober_export_csv', [ $this, 'handle_export_csv' ] );
+	}
+
+	    /**
+     * Register the stylesheets for the admin area.
+     *
+     * @since    1.0.0
+     */
+    public function enqueue_styles()
+    {
+
+        /**
+         * This function is provided for demonstration purposes only.
+         *
+         * An instance of this class should be passed to the run() function
+         * defined in hidden_Stuff_Loader as all of the hooks are defined
+         * in that particular class.
+         *
+         * The Loader will then create the relationship
+         * between the defined hooks and the functions defined in this
+         * class.
+         */
+
+        //wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/liaison-site-prober-admin.css', array(), $this->version, 'all');
+    }
+
+    /**
+     * Register the JavaScript for the admin area.
+     *
+     * @since    1.0.0
+     */
+    public function enqueue_scripts()
+    {
+
+        /**
+         * This function is provided for demonstration purposes only.
+         *
+         * An instance of this class should be passed to the run() function
+         * defined in hidden_Stuff_Loader as all of the hooks are defined
+         * in that particular class.
+         *
+         * The hidden_Stuff_Loader will then create the relationship
+         * between the defined hooks and the functions defined in this
+         * class.
+         */
+
+        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/liaison-site-prober-admin.js', array( 'jquery' ), $this->version, false);
+    }
+
+    /**
+     * hidden_stuff_menu_settings function.
+     * Add a menu item
+     * @access public
+     * @return void
+     */
+
+	public function admin_menu() {
+		add_menu_page(
+			'Site Prober',
+			'Site Prober',
+			'update_core',
+			'wpsp_site_prober_log_list',
+			array($this, 'render_page_list_table'),
+			'dashicons-video-alt2',
+			80
+		);
+	}	
+
+	public function user_info_export( $user_id ) {
+		$msg = '';
+
+		if ( ! empty( $user_id ) && 0 !== (int) $user_id ) {
+			$user = get_user_by( 'id', $user_id );
+			if ( $user instanceof WP_User && 0 !== $user->ID ) {
+				$msg = $user->display_name;		
+			}
+		} else {
+			$msg = 'N/A';
+		}
+
+		return $msg;
+	}
+
+	public function get_list_table() {
+		if ( is_null( $this->wpsp_list_table ) ) {
+			$this->wpsp_list_table = new LIAISIPR_List_Table( );
+		}
+
+		return $this->wpsp_list_table;
+	}
+
+	protected function redirect_back() {
+		wp_safe_redirect( menu_page_url( 'wpsp_site_prober_log_list', false ) );
+		exit;
+	}
+	public function render_page_list_table() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		
+		if ( isset( $_GET['page'] ) && 'wpsp_site_prober_log_list' !== $_GET['page'] ) {
+			$this->redirect_back();
+		} 
+
+		$this->get_list_table()->prepare_items();
+	?>
+		<div class="wrap">
+			<h1><?php esc_html_e( 'Site Prober', 'liaison-site-prober' ); ?></h1>
+			
+			<form id="activity-filter" method="get">
+				<input type="hidden" name="page" value="wpsp_site_prober_log_list">
+				<?php $this->get_list_table()->display(); ?>
+			</form>
+
+		</div>
+	<?php
+
+	}
+
+	function handle_export_csv( ) {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+
+		if ( ! isset( $_GET['wpsp_nonce'] ) ||
+         	! wp_verify_nonce( sanitize_key( $_GET['wpsp_nonce'] ), 'wpsp_list_table_action' ) ) {
+        		wp_die( esc_html__( 'Invalid request.', 'liaison-site-prober' ) );
+    	}
+		global $wpdb;
+		$this->table = $this->logger->get_table_name();
+		$table = sanitize_key( $this->table );
+		$cache_key   = 'site_prober_logs_page_';
+		$cache_group = 'liaison-site-prober';
+
+		// 嘗試從快取抓資料
+		$results = wp_cache_get( $cache_key, $cache_group );
+
+		if ( false === $results ) {
+			// Safe direct database access (custom table, prepared query)
+			$rows = $wpdb->get_results( "SELECT * FROM {$table} ORDER BY created_at DESC",
+				ARRAY_A
+			);
+
+			wp_cache_set( $cache_key, $rows, $cache_group, 5 * MINUTE_IN_SECONDS );
+		}
+
+		// 初始化 WP_Filesystem
+		if ( ! function_exists( 'WP_Filesystem' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+
+		global $wp_filesystem;
+		WP_Filesystem();
+
+		// 暫存檔路徑
+		$upload_dir = wp_upload_dir();
+		$tmp_file   = trailingslashit( $upload_dir['basedir'] ) . 'liaison-site-prober-export.csv';
+
+		// 建立 CSV 內容
+		$csv_lines = [];
+		$csv_lines[] = [ 'id', 'created_at', 'user_id', 'ip', 'action', 'object_type', 'description' ];
+
+		foreach ( $rows as $r ) {
+			$csv_lines[] = [
+				$r['id'],
+				$r['created_at'],
+				$this->user_info_export( $r['user_id'] ),
+				$r['ip'],
+				$r['action'],
+				$r['object_type'],
+				$r['description'],
+			];
+		}
+		
+		// 將陣列轉為 CSV 格式字串
+		$csv_content = '';
+		foreach ( $csv_lines as $line ) {
+			$csv_content .= $this->array_to_csv_line( $line );
+		}
+
+		$wp_filesystem->put_contents( $tmp_file, $csv_content, FS_CHMOD_FILE );
+
+		header( 'Content-Type: text/csv; charset=utf-8' );
+		header( 'Content-Disposition: attachment; filename=liaison-site-prober-export-' . gmdate( 'Y-m-d' ) . '.csv' );
+		header( 'Pragma: no-cache' );
+		header( 'Expires: 0' );
+
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		// 用 WP_Filesystem 安全讀出內容
+		echo wp_kses_post( $wp_filesystem->get_contents( $tmp_file ) );
+
+		$wp_filesystem->delete( $tmp_file );
+		exit;
+	}
+
+	/**
+	 * 將陣列轉成 CSV 一行（處理引號、逗號等）
+	 */
+	private function array_to_csv_line( $fields, $delimiter = ',', $enclosure = '"' ) {
+		$escaped = [];
+		foreach ( $fields as $field ) {
+			$escaped[] = $enclosure . str_replace( $enclosure, $enclosure . $enclosure, $field ) . $enclosure;
+		}
+		return implode( $delimiter, $escaped ) . "\n";
+	}
+}
+
+
