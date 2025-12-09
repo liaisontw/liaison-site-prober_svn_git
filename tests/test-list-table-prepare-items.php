@@ -35,6 +35,8 @@ class Test_LIAISIPR_List_Table_Prepare_Items extends WP_UnitTestCase {
             'object_type' => 'user',
             'description' => 'User logged in'
         ]);
+
+        wp_cache_flush();
     }
 
     public function tearDown(): void {
