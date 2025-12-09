@@ -411,9 +411,10 @@ class LIAISIPR_List_Table extends WP_List_Table {
 		// 嘗試從快取抓資料
 		$results = wp_cache_get( $cache_key, $cache_group );
 
-		if (  ( is_array( $results['items'] ) ) 
-			&& ( false !== $results['total_items'] )  
-		) { 
+		if (   is_array( $results ) 
+    		&& isset( $results['items'], $results['total_items'] )
+    		&& is_array( $results['items'] ) ) 
+		{
 			$this->items = $results['items'];
 			$total_items = $results['total_items'];	
 		} else {
