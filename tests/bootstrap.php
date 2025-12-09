@@ -15,7 +15,7 @@ require_once $_tests_dir . '/includes/functions.php';
 
 // Load the WP_CLI library.
 //require_once 'phar:///usr/local/bin/wp-cli.phar/vendor/autoload.php';
-require_once 'phar://wp-cli.phar/vendor/autoload.php';
+//require_once 'phar://wp-cli.phar/vendor/autoload.php';
 
 // Prevent WP_CLI::error() from calling exit.  A WP_CLI\ExitException will be thrown instead allowing it to be caught during tests.
 $class_wp_cli_capture_exit = new \ReflectionProperty( 'WP_CLI', 'capture_exit' );
