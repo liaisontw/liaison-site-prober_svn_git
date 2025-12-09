@@ -51,6 +51,8 @@ class Test_LIAISIPR_List_Table_Prepare_Items extends WP_UnitTestCase {
         $list_table = new LIAISIPR_List_Table();
         $list_table->table_name = $this->table; // override 真正 table name
 
+        $cache_key   = 'site_prober_logs_page_';
+		$cache_group = 'liaison-site-prober';
         wp_cache_delete( $cache_key, $cache_group );
 
         $list_table->prepare_items();
