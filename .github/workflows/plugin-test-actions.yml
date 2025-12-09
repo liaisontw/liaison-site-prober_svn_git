@@ -34,9 +34,10 @@ jobs:
         extensions: mbstring, mysql, mysqli
         tools: composer
 
-    - name: Install Subversion
-      run: 
-        sudo apt-get update 
+    - name: Install Subversion (svn)
+      #run: 
+      run: |
+        sudo apt-get update
         sudo apt-get install -y subversion
 
     - name: Reset test DB
