@@ -42,7 +42,7 @@ require_once $_phpunit_polyfills_lib;
  */
 
 function _manually_load_plugin() {
-	require dirname( __DIR__, 1 ) . '/rusty-inc-org-chart.php';
+	require dirname( __DIR__, 1 ) . '/liaison-site-prober.php';
 }
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
