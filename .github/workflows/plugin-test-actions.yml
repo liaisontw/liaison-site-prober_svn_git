@@ -41,7 +41,8 @@ jobs:
         sudo apt-get install -y subversion
 
     - name: Reset test DB
-      run: mysql -h127.0.0.1 -uroot -proot -e "DROP DATABASE IF EXISTS wordpress_test;"      
+      run: mysql -h127.0.0.1 -uroot -p -e "DROP DATABASE IF EXISTS wordpress_test;"      
+      #run: mysql -h127.0.0.1 -uroot -proot -e "DROP DATABASE IF EXISTS wordpress_test;"      
       #run: mysql -h127.0.0.1 -uroot -proot -e "CREATE DATABASE wordpress_test;"
     
     - name: Install WP Test Suite
