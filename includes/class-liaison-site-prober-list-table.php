@@ -20,7 +20,8 @@ class LIAISIPR_List_Table extends WP_List_Table {
 			)
 		);
 
-        $this->table_name = $wpdb->wpsp_activity;        
+        //$this->table_name = $wpdb->wpsp_activity;        
+		$this->table_name = $args['table_name'] ?? $wpdb->wpsp_activity;
     }
 
     private function get_filtered_link( $name = '', $value = '' ) {
