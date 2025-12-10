@@ -2,7 +2,7 @@
 /**
  * @group listtable
  */
-class Test_LIAISIPR_List_Table_Prepare_Items extends WP_UnitTestCase {
+class Test_LIAISIPR_List_Table extends WP_UnitTestCase {
 
     private $table;
     private $wpdb;
@@ -46,11 +46,9 @@ class Test_LIAISIPR_List_Table_Prepare_Items extends WP_UnitTestCase {
 
     public function test_prepare_items_loads_rows() {
 
-        //require_once __DIR__ . '/../wp-site-prober/admin/class-liaisipr-list-table.php';
         require_once __DIR__ . '/../includes/class-liaison-site-prober-list-table.php';
 
         // 建立 instance
-        //$list_table = new LIAISIPR_List_Table();
         $list_table = new LIAISIPR_List_Table([
             'table_name' => $this->table
         ]);
@@ -65,5 +63,40 @@ class Test_LIAISIPR_List_Table_Prepare_Items extends WP_UnitTestCase {
 
         $this->assertNotEmpty( $list_table->items );
         $this->assertEquals( 'login', $list_table->items[0]['action'] );
+    }
+
+    public function test_get_filtered_link() {
+
+        require_once __DIR__ . '/../includes/class-liaison-site-prober-list-table.php';
+
+        // 建立 instance
+        $list_table = new LIAISIPR_List_Table([
+            'table_name' => $this->table
+        ]);
+
+        // 模擬 admin page URL
+        $_GET['page'] = 'wpsp_site_prober_log_list';
+
+        $url = $list_table->get_filtered_link('usershow', 5);
+
+        $this->assertStringContainsString('usershow=5', $url);
+        $this->assertStringContainsString('page=wpsp_site_prober_log_list', $url);
+    }
+
+    public function test_search_box_outputs_html() {
+
+        require_once __DIR__ . '/../includes/class-liaison-site-prober-list-table.php';
+
+        // 建立 instance
+        $list_table = new LIAISIPR_List_Table([
+            'table_name' => $this->table
+        ]);
+
+        ob_start();
+        $list_table->search_box('Search', 'wpsp-search');
+        $output = ob_get_clean();
+
+        $this->assertStringContainsString('type="search"', $output);
+        $this->assertStringContainsString('name="s"', $output);
     }
 }
