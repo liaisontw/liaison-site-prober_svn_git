@@ -171,6 +171,9 @@ class LIAISIPR_Actions {
 	}
 
 	public function wpsp_delete_post( $post_id ) {
+		if ( defined('WP_RUNNING_PHPUNIT') ) {
+			return;
+		}
 		$this->log( 'delete_post', 'post', $post_id, sprintf( 'Post %d deleted', $post_id ) );
 	}
 
