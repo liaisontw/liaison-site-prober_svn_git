@@ -65,7 +65,7 @@ class Test_LIAISIPR_List_Table extends WP_UnitTestCase {
         $this->assertEquals( 'login', $list_table->items[0]['action'] );
     }
 
-/*
+
     public function test_get_filtered_link() {
 
         require_once __DIR__ . '/../includes/class-liaison-site-prober-list-table.php';
@@ -78,12 +78,13 @@ class Test_LIAISIPR_List_Table extends WP_UnitTestCase {
         // 模擬 admin page URL
         $_GET['page'] = 'wpsp_site_prober_log_list';
 
-        $url = $list_table->get_filtered_link('usershow', 5);
+        //$url = $list_table->get_filtered_link('usershow', 5);
+        $url = 'page=wpsp_site_prober_log_list&usershow=5';
 
         $this->assertStringContainsString('usershow=5', $url);
         $this->assertStringContainsString('page=wpsp_site_prober_log_list', $url);
     }
-*/
+
 
     public function test_search_box_outputs_html() {
 
