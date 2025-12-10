@@ -8,6 +8,10 @@ class Test_LIAISIPR_Admin extends WP_UnitTestCase {
     private $admin;
     private $logger_mock;
 
+    protected $backupGlobals = false;
+    protected $backupStaticAttributes = false;
+
+
     public function setUp(): void {
         parent::setUp();
 
