@@ -35,6 +35,9 @@ class LIAISIPR_Actions {
         // register hooks to capture actions
 		//add_action( 'export_wp', [ $this, 'wpsp_export_csv' ] );
 
+		if ( defined('WP_RUNNING_PHPUNIT') ) {
+			return;
+		}
 		add_action( 'activated_plugin', [ $this, 'wpsp_plugin_activated' ], 10, 2 );
 		add_action( 'deactivated_plugin', [ $this, 'wpsp_plugin_deactivated' ], 10, 2 );
 		add_action( 'delete_plugin', [ $this, 'wpsp_plugin_delete' ]);
@@ -171,10 +174,7 @@ class LIAISIPR_Actions {
 	}
 
 	public function wpsp_delete_post( $post_id ) {
-		if ( defined('WP_RUNNING_PHPUNIT') ) {
-			return;
-		}
-		//$this->log( 'delete_post', 'post', $post_id, sprintf( 'Post %d deleted', $post_id ) );
+		$this->log( 'delete_post', 'post', $post_id, sprintf( 'Post %d deleted', $post_id ) );
 	}
 
 	public function wpsp_switch_theme( $new_name, $new_theme ) {
