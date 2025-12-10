@@ -8,15 +8,15 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              https://github.com/liaisontw/wp-site-prober
+ * @link              https://github.com/liaisontw/liaison-site-prober_svn_git
  * @since             1.0.0
  * @package           liaison-site-prober
  *
  * @wordpress-plugin
  * Plugin Name:       Liaison Site Prober
- * Plugin URI:        https://github.com/liaisontw/wp-site-prober
+ * Plugin URI:        https://github.com/liaisontw/liaison-site-prober_svn_git
  * Description:       Simple activity / audit logger for WordPress. Creates activity table, hooks common events, admin UI and CSV export.
- * Version:           1.0.0
+ * Version:           1.1.0
  * Author:            liason
  * Author URI:        https://github.com/liaisontw/
  * License: 		  GPLv3 or later  
