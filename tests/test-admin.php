@@ -49,7 +49,7 @@ class Test_LIAISIPR_Admin extends WP_UnitTestCase {
         $this->assertEquals('1.0.0', $version->getValue($this->admin));
         $this->assertEquals('wp_liaisipr_logs', $table->getValue($this->admin));
     }
-
+*/
 
     public function test_user_info_export_existing_user() {
         // 建立測試 user
@@ -68,7 +68,7 @@ class Test_LIAISIPR_Admin extends WP_UnitTestCase {
         $this->assertEquals('N/A', $this->admin->user_info_export(0));
         $this->assertEquals('N/A', $this->admin->user_info_export(null));
     }
-*/
+
 
     public function test_get_list_table_returns_instance() {
 
