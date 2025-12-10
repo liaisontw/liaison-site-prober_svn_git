@@ -18,7 +18,7 @@ class Test_LIAISIPR_List_Table extends WP_UnitTestCase {
         global $wpdb;
         $this->wpdb  = $wpdb;
         $this->table = $wpdb->prefix . 'liaisipr_test_logs';
-        do_action('admin_menu');
+        //do_action('admin_menu');
 
         $wpdb->query("
             CREATE TABLE {$this->table} (
@@ -81,6 +81,7 @@ class Test_LIAISIPR_List_Table extends WP_UnitTestCase {
             'table_name' => $this->table
         ]);
 
+        do_action('admin_menu');
         // 模擬 admin page URL
         $_GET['page'] = 'wpsp_site_prober_log_list';
 
