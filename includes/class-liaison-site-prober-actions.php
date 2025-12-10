@@ -174,7 +174,7 @@ class LIAISIPR_Actions {
 		if ( defined('WP_RUNNING_PHPUNIT') ) {
 			return;
 		}
-		$this->log( 'delete_post', 'post', $post_id, sprintf( 'Post %d deleted', $post_id ) );
+		//$this->log( 'delete_post', 'post', $post_id, sprintf( 'Post %d deleted', $post_id ) );
 	}
 
 	public function wpsp_switch_theme( $new_name, $new_theme ) {
@@ -206,6 +206,7 @@ class LIAISIPR_Actions {
 			$comment = get_comment( $comment_ID );
 		
 		$action = 'created';
+		$term_id = $comment->comment_post_ID;
 		switch ( current_filter() ) {
 			case 'wp_insert_comment' :
 				$action = 1 === (int) $comment->comment_approved ? 'approved' : 'pending';
