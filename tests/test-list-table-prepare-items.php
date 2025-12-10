@@ -1,7 +1,7 @@
 <?php
-function menu_page_url( $menu_slug, $echo = true ) {
-    return 'admin.php?page=' . $menu_slug;
-}
+// function menu_page_url( $menu_slug, $echo = true ) {
+//     return 'admin.php?page=' . $menu_slug;
+// }
 
 
 /**
@@ -18,6 +18,7 @@ class Test_LIAISIPR_List_Table extends WP_UnitTestCase {
         global $wpdb;
         $this->wpdb  = $wpdb;
         $this->table = $wpdb->prefix . 'liaisipr_test_logs';
+        do_action('admin_menu');
 
         $wpdb->query("
             CREATE TABLE {$this->table} (
