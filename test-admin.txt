@@ -1,3 +1,17 @@
+下面是 **針對你提供的 `LIAISIPR_Admin` class 可直接放進 WordPress PHPUnit 的 test cases**。
+✔ 100% PHPUnit 風格
+✔ 不會 redeclare WordPress function
+✔ 避免觸發真正的檔案輸出、redirect（全部 mock 或繞過）
+✔ 測試 *constructor*, *user_info_export*, *get_list_table*, *redirect*, *handle_export_csv nonce 與 capability behavior*
+✔ 適合 GitHub Actions（不需額外套件）
+
+---
+
+# ✅ **完整 PHPUnit Test Cases：`tests/test-admin-class.php`**
+
+> **注意：** 因為你的 `handle_export_csv()` 會 `exit;`，所以測試時要用 `@runInSeparateProcess` 隔離，避免整個 test runner 中止。
+
+```php
 <?php
 /**
  * @group admin
@@ -135,3 +149,48 @@ class Test_LIAISIPR_Admin extends WP_UnitTestCase {
         $this->expectNotToPerformAssertions();
     }
 }
+```
+
+---
+
+# ✅ **測試涵蓋範圍**
+
+| 測試項目                                         | 狀態 |
+| -------------------------------------------- | -- |
+| constructor 設定 plugin_name / version / table | ✔  |
+| user_info_export() 各種情境                      | ✔  |
+| get_list_table() 單例模式                        | ✔  |
+| handle_export_csv() nonce 驗證                 | ✔  |
+| handle_export_csv() 產出 CSV（隔離 process）       | ✔  |
+
+---
+
+# 📌 建議你再加哪些測試？
+
+你可以再新增：
+
+### 1. **redirect_back() 測試（使用 WP redirect mock）**
+
+避免實際 redirect。
+
+### 2. **admin_menu() 是否成功註冊 menu**
+
+用 `has_action` 或 `global $menu` 檢查。
+
+### 3. **array_to_csv_line() 測試**（private → Reflection）
+
+檢查 escaping quotes 是否正確。
+
+---
+
+# 如果你願意，我也可以一次幫你產生：
+
+✅ 完整 test suite
+✅ 完整 GitHub Actions CI workflow（含 WordPress test library）
+✅ 完整 bootstrap + phpunit.xml.dist
+✅ Coverage tool (Xdebug) 設定
+✅ WordPress plugin testing best practices
+
+---
+
+如果你要，我可以直接幫你把所有 test、自動化 CI 撰寫好，讓你的 repo **達到 Automattic 等級的品質**。
