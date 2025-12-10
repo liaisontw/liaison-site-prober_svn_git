@@ -68,6 +68,7 @@ class Test_LIAISIPR_Admin extends WP_UnitTestCase {
         $this->assertEquals('N/A', $this->admin->user_info_export(0));
         $this->assertEquals('N/A', $this->admin->user_info_export(null));
     }
+*/
 
     public function test_get_list_table_returns_instance() {
 
@@ -130,5 +131,5 @@ class Test_LIAISIPR_Admin extends WP_UnitTestCase {
         // 至少確認 CSV 內容有產生（檢查輸出 buffer）
         $this->expectNotToPerformAssertions();
     }
-        */
+
 }
