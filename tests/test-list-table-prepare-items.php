@@ -81,7 +81,17 @@ class Test_LIAISIPR_List_Table extends WP_UnitTestCase {
             'table_name' => $this->table
         ]);
 
-        do_action('admin_menu');
+        add_menu_page(
+			'Site Prober',
+			'Site Prober',
+			'update_core',
+			'wpsp_site_prober_log_list',
+			'',
+			'dashicons-video-alt2',
+			80
+		);
+        
+        //do_action('admin_menu');
         // 模擬 admin page URL
         $_GET['page'] = 'wpsp_site_prober_log_list';
 
