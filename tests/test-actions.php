@@ -42,12 +42,6 @@ class Test_LIAISIPR_Actions_Log extends WP_UnitTestCase {
         ");
 
         // 建立模擬登入使用者
-        /*
-        $this->factory()->user->create_and_set([
-            'role' => 'administrator'
-        ]);
-        */
-
         // Correct way: create and set current user
         $user_id = self::factory()->user->create([
             'role' => 'administrator'

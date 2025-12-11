@@ -169,7 +169,6 @@ class LIAISIPR_List_Table extends WP_List_Table {
 
 		echo '<div class="alignleft actions">';
 
-		//$table = sanitize_key( $this->table_name );
 		$cache_key   = 'site_prober_logs_page_';
 		$cache_group = 'liaison-site-prober';
 
@@ -231,15 +230,6 @@ class LIAISIPR_List_Table extends WP_List_Table {
 					$output[ $user->ID ] = $user->user_nicename;
 			}
 
-			// if ( ! empty( $output ) ) {
-			// 	echo '<select name="usershow" id="hs-filter-usershow">';
-			// 	printf( '<option value="">%s</option>', __( 'All Users', 'aryo-activity-log' ) );
-			// 	foreach ( $output as $key => $value ) {
-			// 		printf( '<option value="%s"%s>%s</option>', $key, selected( $_REQUEST['usershow'], $key, false ), $value );
-			// 	}
-			// 	echo '</select>';
-			// }
-
 			$selected_value = isset( $_REQUEST['usershow'] )
 				? sanitize_text_field( wp_unslash( $_REQUEST['usershow'] ) )
 				: '';
@@ -271,10 +261,6 @@ class LIAISIPR_List_Table extends WP_List_Table {
 				$_REQUEST['typeshow'] = '';
 			}
 
-			// echo '<select name="typeshow" id="hs-filter-typeshow">';
-			// printf( '<option value="">%s</option>', __( 'All Objects', 'liaison-site-prober' ) );
-			// echo implode( '', $output );
-			// echo '</select>';
 			$output = array();
 
 			$selected_value = isset( $_REQUEST['typeshow'] )
@@ -362,11 +348,9 @@ class LIAISIPR_List_Table extends WP_List_Table {
 		global $wpdb;
 
         $items_per_page = 20;        
-        //$table = $this->table_name;
         
         $clear  = isset( $_POST['clearLogs'] ) ? sanitize_text_field( wp_unslash( $_POST['clearLogs'] ) ) : '';
 		if ( $clear ){
-			//error_log(  'clearLogs');
 			check_admin_referer( 'wpsp_list_table_action', 'wpsp_nonce' );
 			$this->delete_all_items();
 		}

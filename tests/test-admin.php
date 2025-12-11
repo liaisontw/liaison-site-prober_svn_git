@@ -31,26 +31,6 @@ class Test_LIAISIPR_Admin extends WP_UnitTestCase {
         );
     }
 
-/*
-    public function test_constructor_sets_properties() {
-
-        $reflection = new ReflectionClass($this->admin);
-
-        $plugin_name = $reflection->getProperty('plugin_name');
-        $plugin_name->setAccessible(true);
-
-        $version = $reflection->getProperty('version');
-        $version->setAccessible(true);
-
-        $table = $reflection->getProperty('table');
-        $table->setAccessible(true);
-
-        $this->assertEquals('liaison-site-prober', $plugin_name->getValue($this->admin));
-        $this->assertEquals('1.0.0', $version->getValue($this->admin));
-        $this->assertEquals('wp_liaisipr_logs', $table->getValue($this->admin));
-    }
-*/
-
     public function test_user_info_export_existing_user() {
         // 建立測試 user
         $user_id = $this->factory()->user->create([

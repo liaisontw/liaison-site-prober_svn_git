@@ -18,7 +18,6 @@ class Test_LIAISIPR_List_Table extends WP_UnitTestCase {
         global $wpdb;
         $this->wpdb  = $wpdb;
         $this->table = $wpdb->prefix . 'liaisipr_test_logs';
-        //do_action('admin_menu');
 
         $wpdb->query("
             CREATE TABLE {$this->table} (

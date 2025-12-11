@@ -65,10 +65,16 @@ Yes. You can export your site’s activity log to a CSV file from the plugin’s
 
 == Changelog ==
 
+= 1.1.0 =
+* Add PHPUnit test cases.
+
 = 1.0.0 =
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+* Add PHPUnit test cases.
 
 = 1.0.0 =
 First stable release.
