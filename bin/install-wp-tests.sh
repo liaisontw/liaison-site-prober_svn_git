@@ -100,6 +100,7 @@ install_test_suite() {
 		local ioption='-i'
 	fi
 
+	
 	# set up testing suite if it doesn't yet exist
 	if [ ! -d $WP_TESTS_DIR ]; then
 		# set up testing suite
