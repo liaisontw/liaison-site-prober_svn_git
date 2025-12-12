@@ -44,11 +44,15 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-wp-tests-
 
-    - name: Cache APT
-      uses: awalsh128/cache-apt-pkgs-action@v1
-      with:
-        packages: subversion
-        version: 1.0
+    - name: Install svn
+      run: sudo apt-get update && sudo apt-get install -y subversion
+
+    
+    #- name: Cache APT
+    #  uses: awalsh128/cache-apt-pkgs-action@v1
+    #  with:
+    #    packages: subversion
+    #    version: 1.0
 
     # ------------------------
     # Setup PHP
