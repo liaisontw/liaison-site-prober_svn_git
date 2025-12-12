@@ -44,6 +44,12 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-wp-tests-
 
+    - name: Cache APT
+      uses: awalsh128/cache-apt-pkgs-action@v1
+      with:
+        packages: subversion
+        version: 1.0
+
     # ------------------------
     # Setup PHP
     # ------------------------
