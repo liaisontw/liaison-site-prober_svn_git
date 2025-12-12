@@ -67,9 +67,6 @@ class LIAISIPR {
 		global $wpdb;
 		$wpdb->wpsp_activity = $wpdb->prefix . 'liaison_site_prober';
 		$this->table_name = $wpdb->wpsp_activity;
-		// if ( defined('WP_RUNNING_PHPUNIT') ) {
-		// 	$this->table_name = $wpdb->prefix . 'liaisipr_test_logs';
-		// } 
 		$this->dir = plugin_basename( __FILE__ );
 
 		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-liaison-site-prober-actions.php';
