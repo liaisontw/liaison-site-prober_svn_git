@@ -30,8 +30,19 @@ class LIAISIPR_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
+		register_activation_hook( __FILE__, 'plugin_upgrade' );
 		add_option( 'liaisipr_active', 'yes' );
+		add_option( 'liaisipr_version', 'LIAISIPR_VERSION' );
 		self::_create_tables();
+	}
+
+	protected static function plugin_upgrade() {
+		$version = get_option( 'liaisipr_version' );
+
+		if ( version_compare( $version, '1.1.0', '<' ) ) {
+			// migrate data
+		}
+		update_option( 'my_plugin_version', '1.1.0' );
 	}
 
 	/**
